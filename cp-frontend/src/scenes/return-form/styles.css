@@ -1,0 +1,2 @@
+.itemSelect input { display:none; }
+.itemSelect input:checked ~ label { color:red; }
