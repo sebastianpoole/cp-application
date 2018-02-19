@@ -1,7 +1,7 @@
 import React from 'react'
 import { Field, label, reduxForm } from 'redux-form'
 //import validate from '../services/validate'
-import renderItemFields from '../services/renderItemFields'
+import renderItemFields from './components/ItemFieldTemplate.js'
 
 const ReturnFormStepOne = props => {
   const { handleSubmit, previousPage, itemFields } = props
@@ -24,7 +24,7 @@ const ReturnFormStepOne = props => {
 }
 
 export default reduxForm({
-  form: 'wizard', // <------ same form name
+  form: 'returnForm', // <------ same form name
   destroyOnUnmount: false, // <------ preserve form data
   forceUnregisterOnUnmount: true
 })(ReturnFormStepOne)

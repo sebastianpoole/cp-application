@@ -1,7 +1,8 @@
 import React from 'react'
 import { withRouter } from "react-router-dom"
 import { Field, reduxForm } from 'redux-form'
-import validate from '../services/validate'
+import validate from '../Services/validate'
+
 const colors = ['Red', 'Orange', 'Yellow', 'Green', 'Blue', 'Indigo', 'Violet']
 
 const renderColorSelector = ({ input, meta: { touched, error } }) => (
@@ -24,7 +25,7 @@ const ReturnFormStepThree = props => {
     <form onSubmit={handleSubmit}>
       <div>
         <label>Favorite Color</label>
-        <Field name="favoriteColor" component={renderColorSelector} />
+        <Field name="LAZ0000123123.favoriteColor" component={renderColorSelector} />
       </div>
       <div>
         <label htmlFor="employed">Employed</label>
@@ -55,7 +56,7 @@ const ReturnFormStepThree = props => {
   )
 }
 export default withRouter(reduxForm({
-  form: 'wizard', //Form name is same
+  form: 'returnForm', //Form name is same
   destroyOnUnmount: false,
   forceUnregisterOnUnmount: true, // <------ unregister fields on unmount
   validate

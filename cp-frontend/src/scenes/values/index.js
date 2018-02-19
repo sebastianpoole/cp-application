@@ -6,7 +6,7 @@ import {
 export default class DisplayValues extends Component {
 	render() {
 		return(
-		<Values form="wizard" />
+		<Values form="returnForm" />
 		)
 	}
 }

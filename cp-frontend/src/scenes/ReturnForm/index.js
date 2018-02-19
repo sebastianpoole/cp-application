@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from "react-router-dom";
 import PropTypes from 'prop-types';
-import ReturnFormStepOne from './steps/rfStepOne';
-import ReturnFormStepTwo from './steps/rfStepTwo';
-import ReturnFormStepThree from './steps/rfStepThree';
+import { connect } from 'react-redux'
+import ReturnFormStepOne from './StepOne/index';
+import ReturnFormStepTwo from './StepTwo/index';
+import ReturnFormStepThree from './StepThree/index';
 import request from "superagent";
-import DisplayValues from '../values/index';
+import DisplayValues from '../Values/index';
 import {
   Values
 } from 'redux-form-website-template';
-import "./styles.css";
+import { formValueSelector, reduxForm, getFormValues } from 'redux-form';
 
 class ReturnForm extends Component {
   constructor(props) {
@@ -21,11 +22,25 @@ class ReturnForm extends Component {
       page: 1,
       itemFields: [],
       secondFields: [],
+      formValues: [],
     }
   }
 
   componentDidMount() {
     this.getFormFields();
+  }
+
+  updateFormData(currentFormValues) {
+    // Get the Order List
+    const currentItemFields = this.state.itemFields;
+
+    // Set New list of Item Fields
+    const formItemList = [];
+    currentFormValues.returnedItems.forEach(function (value) {
+      var foundItem = currentItemFields.filter(orderItems => orderItems.value == value)
+      formItemList.push(foundItem[0]);
+    });
+    return formItemList;
   }
 
   getFormFields() {
@@ -45,7 +60,10 @@ class ReturnForm extends Component {
   }
   
   showResults(values) {
+    // Console Log the current item values (can be removed)
     console.log(values);
+
+    // Make the API Request to database
     request
    .post('https://ry7fo9wi4l.execute-api.ap-southeast-1.amazonaws.com/prod/returns')
    .set('Content-Type', 'application/json')
@@ -56,12 +74,25 @@ class ReturnForm extends Component {
    });
   }
 
-  nextPage() {
-    this.setState({ page: this.state.page + 1 })
+  nextPage(values) {
+    // Set the values variable
+    const currentFormValues = values;
+
+    // Call the update function to create a list of current items selected for return
+    var newList = this.updateFormData(currentFormValues);
+
+    // Set the state of the page and the new item list to use in the form
+    this.setState({ 
+      page: this.state.page + 1,
+      formValues: newList
+    })
   }
 
   previousPage() {
-    this.setState({ page: this.state.page - 1 })
+    // Set the state of the page
+    this.setState({ 
+      page: this.state.page - 1
+    })
   }
 
   render() {
@@ -73,12 +104,14 @@ class ReturnForm extends Component {
           <ReturnFormStepTwo
             previousPage={this.previousPage}
             onSubmit={this.nextPage}
+            itemFields={this.state.formValues}
           />
         )}
         {page === 3 && (
           <ReturnFormStepThree  
             previousPage={this.previousPage}
             onSubmit={this.showResults}
+            itemFields={this.state.formValues}
           />
         )}
         <DisplayValues />

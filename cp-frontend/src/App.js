@@ -7,7 +7,7 @@ import { reducer as reduxFormReducer } from 'redux-form'
 import PropTypes from 'prop-types'
 
 import {Grid, Row} from 'react-bootstrap'
-import ReturnForm from './scenes/return-form/index'
+import ReturnForm from './scenes/ReturnForm/index'
 import { Nav, Navbar } from "react-bootstrap";
 
 
